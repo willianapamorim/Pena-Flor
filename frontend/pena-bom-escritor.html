@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Pena de um Bom Escritor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Cinzel:wght@400;500;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-pale: #f5e8c0;
+    --ink: #1a1209;
+    --parchment: #f2e8d5;
+    --parchment-dark: #e0ceaf;
+    --brown-deep: #2c1a0e;
+    --brown-mid: #4a2c14;
+    --brown-light: #7a4a28;
+    --cream: #faf6ed;
+    --text-body: #3a2410;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    background: var(--ink);
+    color: var(--parchment);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 32px; height: 32px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.18s ease;
+    opacity: 0.6;
+  }
+  body:hover .cursor { opacity: 1; }
+
+  /* GRAIN OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9000;
+    opacity: 0.35;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    padding: 0 48px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(26,18,9,0.97) 0%, rgba(26,18,9,0) 100%);
+    transition: background 0.4s ease;
+  }
+  nav.scrolled {
+    background: rgba(26,18,9,0.97);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+  .nav-logo-icon {
+    font-size: 26px;
+    line-height: 1;
+    filter: drop-shadow(0 0 8px rgba(201,168,76,0.5));
+  }
+  .nav-logo-text {
+    display: flex;
+    flex-direction: column;
+  }
+  .nav-logo-main {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    line-height: 1.2;
+  }
+  .nav-logo-sub {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: rgba(201,168,76,0.5);
+    text-transform: uppercase;
+  }
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: rgba(242,232,213,0.7);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0; right: 0;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  /* HAMBURGER */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: none;
+    background: none;
+    border: none;
+    padding: 4px;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px; height: 1.5px;
+    background: var(--gold);
+    transition: all 0.3s ease;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* MOBILE MENU */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,18,9,0.98);
+    z-index: 999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .mobile-menu.open { opacity: 1; display: flex; }
+  .mobile-menu a {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: var(--ink);
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 60% 40%, rgba(74,44,20,0.4) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 80% 70%, rgba(201,168,76,0.08) 0%, transparent 60%),
+      linear-gradient(135deg, #0d0904 0%, #1f1208 40%, #2c1a0e 100%);
+  }
+  .hero-lines {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .hero-line {
+    position: absolute;
+    background: linear-gradient(90deg, transparent, rgba(201,168,76,0.15), transparent);
+    height: 1px;
+    width: 100%;
+    animation: lineFade 8s ease-in-out infinite;
+  }
+  .hero-line:nth-child(1) { top: 20%; animation-delay: 0s; }
+  .hero-line:nth-child(2) { top: 45%; animation-delay: 2.5s; opacity: 0.5; }
+  .hero-line:nth-child(3) { top: 75%; animation-delay: 5s; opacity: 0.3; }
+  @keyframes lineFade {
+    0%, 100% { opacity: 0; transform: translateX(-100%); }
+    50% { opacity: 1; transform: translateX(0); }
+  }
+
+  /* Floating particles */
+  .particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .particle {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: float 12s ease-in-out infinite;
+    opacity: 0;
+  }
+  @keyframes float {
+    0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.3; }
+    100% { transform: translateY(-10vh) translateX(30px); opacity: 0; }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    max-width: 700px;
+    padding: 120px 80px 80px;
+  }
+  .hero-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.3s forwards;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 40px; height: 1px;
+    background: var(--gold);
+  }
+  .hero-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(48px, 6vw, 82px);
+    font-weight: 400;
+    line-height: 1.05;
+    color: var(--parchment);
+    margin-bottom: 12px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.5s forwards;
+  }
+  .hero-title em {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--gold-light);
+    font-size: 1.1em;
+  }
+  .hero-subtitle {
+    font-size: clamp(15px, 2vw, 19px);
+    font-style: italic;
+    color: rgba(242,232,213,0.6);
+    margin-bottom: 48px;
+    line-height: 1.6;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.7s forwards;
+  }
+  .hero-quote {
+    font-size: 14px;
+    font-style: italic;
+    color: rgba(201,168,76,0.7);
+    border-left: 1px solid var(--gold);
+    padding-left: 20px;
+    margin-bottom: 52px;
+    line-height: 1.7;
+    max-width: 500px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.9s forwards;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 40px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    text-decoration: none;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 1.1s forwards;
+  }
+  .hero-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+  }
+  .hero-cta:hover::before { transform: translateX(0); }
+  .hero-cta:hover { color: var(--ink); }
+  .hero-cta span { position: relative; z-index: 1; }
+
+  .hero-deco {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 45%;
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+  .hero-circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.12);
+  }
+  .hero-circle:nth-child(1) { width: 500px; height: 500px; animation: rotate 40s linear infinite; }
+  .hero-circle:nth-child(2) { width: 380px; height: 380px; animation: rotate 25s linear infinite reverse; border-color: rgba(201,168,76,0.08); }
+  .hero-circle:nth-child(3) { width: 260px; height: 260px; animation: rotate 18s linear infinite; border-color: rgba(201,168,76,0.18); }
+  @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  .hero-pen {
+    position: absolute;
+    font-size: 120px;
+    filter: drop-shadow(0 0 40px rgba(201,168,76,0.3));
+    animation: penFloat 6s ease-in-out infinite;
+  }
+  @keyframes penFloat {
+    0%, 100% { transform: translateY(0) rotate(-15deg); }
+    50% { transform: translateY(-20px) rotate(-12deg); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SECTION BASICS */
+  section { position: relative; }
+  .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .section-label::before {
+    content: '';
+    width: 30px; height: 1px;
+    background: var(--gold);
+  }
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--parchment);
+  }
+  .section-title em {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  /* GAVETAS / DRAWER SECTION */
+  .gavetas {
+    background: var(--parchment);
+    color: var(--text-body);
+    padding: 120px 80px;
+  }
+  .gavetas .section-label { color: var(--brown-mid); }
+  .gavetas .section-label::before { background: var(--brown-mid); }
+  .gavetas .section-title { color: var(--brown-deep); }
+  .gavetas-intro {
+    max-width: 520px;
+    margin-bottom: 80px;
+  }
+  .gavetas-intro p {
+    margin-top: 20px;
+    font-size: 18px;
+    color: var(--brown-light);
+    line-height: 1.7;
+    font-style: italic;
+  }
+  .gavetas-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .gaveta-card {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+    background: var(--brown-deep);
+    cursor: none;
+  }
+  .gaveta-card:nth-child(4), .gaveta-card:nth-child(5) {
+    grid-column: span 1;
+  }
+  .gaveta-card-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    filter: brightness(0.5) sepia(0.3);
+  }
+  .gaveta-card:hover .gaveta-card-bg {
+    transform: scale(1.08);
+    filter: brightness(0.7) sepia(0.2);
+  }
+  .gaveta-card-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 36px 32px;
+    background: linear-gradient(to top, rgba(26,18,9,0.95) 0%, rgba(26,18,9,0.2) 60%, transparent 100%);
+  }
+  .gaveta-number {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .gaveta-title {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    color: var(--parchment);
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+  .gaveta-desc {
+    font-size: 13px;
+    color: rgba(242,232,213,0.65);
+    font-style: italic;
+    line-height: 1.5;
+    margin-bottom: 24px;
+  }
+  .gaveta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    transition: gap 0.3s;
+  }
+  .gaveta-btn::after {
+    content: '→';
+    transition: transform 0.3s;
+  }
+  .gaveta-card:hover .gaveta-btn { gap: 18px; }
+  .gaveta-card:hover .gaveta-btn::after { transform: translateX(4px); }
+
+  /* Gradient backgrounds for cards */
+  .bg-avos { background: linear-gradient(135deg, #3d2010 0%, #1a0d06 100%); }
+  .bg-pais { background: linear-gradient(135deg, #0d1a10 0%, #06120a 100%); }
+  .bg-jovens { background: linear-gradient(135deg, #1a1030 0%, #0a0818 100%); }
+  .bg-adolescentes { background: linear-gradient(135deg, #301020 0%, #180810 100%); }
+  .bg-pijamas { background: linear-gradient(135deg, #1a1a30 0%, #0a0a18 100%); }
+
+  /* ATELIÊ */
+  .atelie {
+    background: #0f0a05;
+    padding: 120px 80px;
+    overflow: hidden;
+  }
+  .atelie-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .atelie-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: end;
+    margin-bottom: 80px;
+  }
+  .atelie-header p {
+    font-size: 18px;
+    font-style: italic;
+    color: rgba(242,232,213,0.6);
+    line-height: 1.8;
+    align-self: center;
+  }
+  .obras-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-bottom: 80px;
+  }
+  .obra-card {
+    position: relative;
+    background: rgba(201,168,76,0.04);
+    border: 1px solid rgba(201,168,76,0.15);
+    padding: 40px 32px;
+    transition: all 0.4s ease;
+    overflow: hidden;
+  }
+  .obra-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.08) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .obra-card:hover { border-color: rgba(201,168,76,0.4); }
+  .obra-card:hover::before { opacity: 1; }
+  .obra-tag {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .obra-title {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    color: var(--parchment);
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .obra-subtitle {
+    font-size: 14px;
+    font-style: italic;
+    color: var(--gold-pale);
+    margin-bottom: 8px;
+  }
+  .obra-desc {
+    font-size: 14px;
+    color: rgba(242,232,213,0.5);
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+  .obra-link {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: opacity 0.3s;
+  }
+  .obra-link:hover { opacity: 0.7; }
+
+  .curadoria-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    border: 1px solid rgba(201,168,76,0.1);
+  }
+  .curadoria-item {
+    padding: 40px 32px;
+    border-right: 1px solid rgba(201,168,76,0.1);
+    transition: background 0.3s;
+  }
+  .curadoria-item:last-child { border-right: none; }
+  .curadoria-item:hover { background: rgba(201,168,76,0.04); }
+  .curadoria-author {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    color: var(--gold-light);
+    margin-bottom: 8px;
+  }
+  .curadoria-work {
+    font-size: 14px;
+    font-style: italic;
+    color: rgba(242,232,213,0.5);
+    margin-bottom: 20px;
+  }
+  .curadoria-link {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  /* SABIJU */
+  .sabiju {
+    background: var(--cream);
+    color: var(--text-body);
+    padding: 120px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .sabiju::before {
+    content: 'SABIJU';
+    position: absolute;
+    font-family: 'Cinzel', serif;
+    font-size: 280px;
+    font-weight: 600;
+    color: rgba(74,44,20,0.04);
+    right: -40px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .sabiju-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .sabiju .section-label { color: var(--brown-mid); }
+  .sabiju .section-label::before { background: var(--brown-mid); }
+  .sabiju .section-title { color: var(--brown-deep); }
+  .sabiju-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    margin-top: 80px;
+  }
+  .sabiju-main-card {
+    background: var(--brown-deep);
+    color: var(--parchment);
+    padding: 60px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .sabiju-main-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(201,168,76,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .sabiju-card-label {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .sabiju-card-title {
+    font-family: 'Cinzel', serif;
+    font-size: 32px;
+    color: var(--parchment);
+    margin-bottom: 16px;
+    line-height: 1.2;
+  }
+  .sabiju-card-desc {
+    font-size: 16px;
+    font-style: italic;
+    color: rgba(242,232,213,0.65);
+    line-height: 1.8;
+    margin-bottom: 36px;
+  }
+  .sabiju-features {
+    list-style: none;
+    margin-bottom: 40px;
+  }
+  .sabiju-features li {
+    font-size: 14px;
+    color: rgba(242,232,213,0.8);
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .sabiju-features li::before {
+    content: '◆';
+    color: var(--gold);
+    font-size: 7px;
+  }
+  .sabiju-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 15px 36px;
+    background: var(--gold);
+    color: var(--ink);
+    text-decoration: none;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    transition: all 0.3s;
+  }
+  .sabiju-cta:hover { background: var(--gold-light); }
+
+  .sabiju-right {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .sabiju-mini-card {
+    background: white;
+    border: 1px solid rgba(74,44,20,0.1);
+    padding: 36px 32px;
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative;
+  }
+  .sabiju-mini-card:hover {
+    border-color: var(--gold);
+    transform: translateX(6px);
+  }
+  .sabiju-mini-card h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    color: var(--brown-deep);
+    margin-bottom: 10px;
+  }
+  .sabiju-mini-card p {
+    font-size: 14px;
+    color: var(--brown-light);
+    font-style: italic;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .sabiju-mini-link {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--brown-mid);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  /* SEBO */
+  .sebo {
+    background: #080502;
+    padding: 120px 80px;
+  }
+  .sebo-inner { max-width: 1200px; margin: 0 auto; }
+  .sebo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 80px;
+  }
+  .sebo-card {
+    background: rgba(201,168,76,0.04);
+    border: 1px solid rgba(201,168,76,0.1);
+    padding: 0 0 40px;
+    overflow: hidden;
+    transition: border-color 0.4s;
+    position: relative;
+  }
+  .sebo-card:hover { border-color: rgba(201,168,76,0.4); }
+  .sebo-img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: var(--brown-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .sebo-img::after {
+    content: 'Estoque Limitado';
+    position: absolute;
+    top: 20px; right: 0;
+    background: var(--gold);
+    color: var(--ink);
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    padding: 6px 14px;
+    text-transform: uppercase;
+  }
+  .sebo-card-content { padding: 0 32px; }
+  .sebo-card-title {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    color: var(--parchment);
+    margin-bottom: 10px;
+  }
+  .sebo-card-desc {
+    font-size: 14px;
+    font-style: italic;
+    color: rgba(242,232,213,0.5);
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+  .sebo-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 28px;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    text-decoration: none;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    transition: all 0.3s;
+  }
+  .sebo-btn:hover { background: var(--gold); color: var(--ink); }
+
+  /* CONTATO */
+  .contato {
+    background: var(--parchment);
+    color: var(--text-body);
+    padding: 120px 80px;
+  }
+  .contato-inner { max-width: 1200px; margin: 0 auto; }
+  .contato .section-label { color: var(--brown-mid); }
+  .contato .section-label::before { background: var(--brown-mid); }
+  .contato .section-title { color: var(--brown-deep); }
+  .contato-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    margin-top: 80px;
+  }
+  .contato-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .form-group label {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--brown-mid);
+    text-transform: uppercase;
+  }
+  .form-group input,
+  .form-group textarea {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(74,44,20,0.3);
+    padding: 12px 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: var(--text-body);
+    outline: none;
+    transition: border-color 0.3s;
+    resize: none;
+  }
+  .form-group input:focus,
+  .form-group textarea:focus { border-color: var(--brown-mid); }
+  .form-submit {
+    align-self: flex-start;
+    margin-top: 12px;
+    padding: 15px 44px;
+    background: var(--brown-deep);
+    color: var(--gold);
+    border: none;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: background 0.3s;
+  }
+  .form-submit:hover { background: var(--brown-mid); }
+  .contato-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 48px;
+  }
+  .contato-info p {
+    font-size: 18px;
+    font-style: italic;
+    color: var(--brown-light);
+    line-height: 1.8;
+  }
+  .social-links {
+    display: flex;
+    gap: 24px;
+  }
+  .social-link {
+    width: 48px; height: 48px;
+    border: 1px solid rgba(74,44,20,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 20px;
+    color: var(--brown-mid);
+    transition: all 0.3s;
+  }
+  .social-link:hover {
+    background: var(--brown-deep);
+    color: var(--gold);
+    border-color: var(--brown-deep);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    padding: 48px 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(201,168,76,0.1);
+  }
+  .footer-logo {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+  }
+  .footer-nav {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .footer-nav a {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: rgba(242,232,213,0.4);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .footer-nav a:hover { color: var(--gold); }
+  .footer-copy {
+    font-size: 11px;
+    color: rgba(242,232,213,0.25);
+    letter-spacing: 0.1em;
+  }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* DIVIDER */
+  .ornamental-divider {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin: 60px 0;
+    opacity: 0.4;
+  }
+  .ornamental-divider::before, .ornamental-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+  }
+  .ornamental-divider span { font-size: 14px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    nav { padding: 0 32px; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .hero-content { padding: 100px 32px 60px; }
+    .hero-deco { display: none; }
+    .gavetas { padding: 80px 32px; }
+    .gavetas-grid { grid-template-columns: 1fr 1fr; }
+    .atelie { padding: 80px 32px; }
+    .atelie-header { grid-template-columns: 1fr; gap: 24px; }
+    .obras-grid { grid-template-columns: 1fr 1fr; }
+    .curadoria-grid { grid-template-columns: 1fr; }
+    .curadoria-item { border-right: none; border-bottom: 1px solid rgba(201,168,76,0.1); }
+    .sabiju { padding: 80px 32px; }
+    .sabiju-grid { grid-template-columns: 1fr; gap: 40px; }
+    .sebo { padding: 80px 32px; }
+    .sebo-grid { grid-template-columns: 1fr 1fr; }
+    .contato { padding: 80px 32px; }
+    .contato-grid { grid-template-columns: 1fr; }
+    footer { padding: 40px 32px; flex-direction: column; gap: 24px; text-align: center; }
+    .footer-nav { flex-wrap: wrap; justify-content: center; }
+  }
+
+  @media (max-width: 640px) {
+    .gavetas-grid { grid-template-columns: 1fr; }
+    .obras-grid { grid-template-columns: 1fr; }
+    .sebo-grid { grid-template-columns: 1fr; }
+    .hero-content { padding: 90px 24px 60px; }
+    .gavetas { padding: 60px 24px; }
+    .atelie { padding: 60px 24px; }
+    .sabiju { padding: 60px 24px; }
+    .sebo { padding: 60px 24px; }
+    .contato { padding: 60px 24px; }
+    .sabiju::before { font-size: 120px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAVIGATION -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-icon">🪶</span>
+    <div class="nav-logo-text">
+      <span class="nav-logo-main">A Pena de um Bom Escritor</span>
+      <span class="nav-logo-sub">Aqui sua história vale ouro</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#gavetas">Gavetas</a></li>
+    <li><a href="#atelie">Ateliê</a></li>
+    <li><a href="#sabiju">SABIJU</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#gavetas" class="mobile-link">Gavetas</a>
+  <a href="#atelie" class="mobile-link">Ateliê</a>
+  <a href="#sabiju" class="mobile-link">SABIJU</a>
+  <a href="#contato" class="mobile-link">Contato</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-lines">
+    <div class="hero-line"></div>
+    <div class="hero-line"></div>
+    <div class="hero-line"></div>
+  </div>
+  <div class="particles" id="particles"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Literatura & Memória</div>
+    <h1 class="hero-title">
+      Bem-vindo à<br>
+      <em>Pena de um</em><br>
+      Bom Escritor
+    </h1>
+    <p class="hero-subtitle">Sinta-se em casa. Aqui, sua história tem valor.</p>
+    <blockquote class="hero-quote">
+      "Se até a inteligência artificial precisou ler romances para aprender a sentir, imagine o que as histórias do Ateliê Penna Flor podem fazer por você."
+    </blockquote>
+    <a href="#gavetas" class="hero-cta">
+      <span>Explorar as Gavetas</span>
+    </a>
+  </div>
+
+  <div class="hero-deco">
+    <div class="hero-circle"></div>
+    <div class="hero-circle"></div>
+    <div class="hero-circle"></div>
+    <div class="hero-pen">🪶</div>
+  </div>
+</section>
+
+<!-- GAVETAS -->
+<section class="gavetas" id="gavetas">
+  <div class="gavetas-intro reveal">
+    <div class="section-label">As Gavetas</div>
+    <h2 class="section-title">Onde cada<br><em>história encontra</em><br>seu lar</h2>
+    <p>Cada gaveta guarda um universo. Escolha a sua e abra as portas da memória e da imaginação.</p>
+  </div>
+  <div class="gavetas-grid">
+    <div class="gaveta-card reveal">
+      <div class="gaveta-card-bg bg-avos" style="background-image: linear-gradient(135deg,#3d2010,#1a0d06);"></div>
+      <div class="gaveta-card-content">
+        <div class="gaveta-number">01 — Memória</div>
+        <h3 class="gaveta-title">O Canto dos Avós</h3>
+        <p class="gaveta-desc">Onde a memória é o tesouro e o idoso é o mestre</p>
+        <a href="#" class="gaveta-btn">Abrir Gaveta</a>
+      </div>
+    </div>
+    <div class="gaveta-card reveal reveal-delay-1">
+      <div class="gaveta-card-bg bg-pais"></div>
+      <div class="gaveta-card-content">
+        <div class="gaveta-number">02 — Família</div>
+        <h3 class="gaveta-title">O Canto dos Pais</h3>
+        <p class="gaveta-desc">Para quem cuida de todos e precisa de um porto seguro</p>
+        <a href="#" class="gaveta-btn">Abrir Gaveta</a>
+      </div>
+    </div>
+    <div class="gaveta-card reveal reveal-delay-2">
+      <div class="gaveta-card-bg bg-jovens"></div>
+      <div class="gaveta-card-content">
+        <div class="gaveta-number">03 — Identidade</div>
+        <h3 class="gaveta-title">O Canto dos Jovens</h3>
+        <p class="gaveta-desc">Identidade, propósito e a descoberta do próprio mundo</p>
+        <a href="#" class="gaveta-btn">Abrir Gaveta</a>
+      </div>
+    </div>
+    <div class="gaveta-card reveal reveal-delay-1">
+      <div class="gaveta-card-bg bg-adolescentes"></div>
+      <div class="gaveta-card-content">
+        <div class="gaveta-number">04 — Protagonismo</div>
+        <h3 class="gaveta-title">O Canto dos Adolescentes</h3>
+        <p class="gaveta-desc">Mostrar que eles são os protagonistas de suas histórias</p>
+        <a href="#" class="gaveta-btn">Abrir Gaveta</a>
+      </div>
+    </div>
+    <div class="gaveta-card reveal reveal-delay-2">
+      <div class="gaveta-card-bg bg-pijamas"></div>
+      <div class="gaveta-card-content">
+        <div class="gaveta-number">05 — Encanto</div>
+        <h3 class="gaveta-title">Pijamas com Histórias</h3>
+        <p class="gaveta-desc">O lúdico, o entretenimento e o aconchego familiar</p>
+        <a href="#" class="gaveta-btn">Abrir Gaveta</a>
+      </div>
+    </div>
+    <div class="gaveta-card reveal reveal-delay-3" style="background:#0d0904;display:flex;align-items:center;justify-content:center;padding:40px;">
+      <div style="text-align:center;">
+        <div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.4em;color:var(--gold);margin-bottom:20px;text-transform:uppercase;">Em breve</div>
+        <div style="font-family:'Cinzel',serif;font-size:22px;color:rgba(242,232,213,0.4);line-height:1.3;">Novas gavetas a caminho</div>
+        <div class="ornamental-divider" style="color:var(--gold);margin:30px 0;">
+          <span>◆</span>
+        </div>
+        <p style="font-size:13px;color:rgba(242,232,213,0.25);font-style:italic;">Cada história merece seu espaço</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ATELIÊ -->
+<section class="atelie" id="atelie">
+  <div class="atelie-inner">
+    <div class="atelie-header reveal">
+      <div>
+        <div class="section-label">Ateliê Literário</div>
+        <h2 class="section-title">Penna<br><em>Flor</em></h2>
+      </div>
+      <p>Bem-vindo ao meu ateliê, onde as histórias são lapidadas com amor e verdade. Minhas obras, análises e reflexões sobre a arte da palavra.</p>
+    </div>
+
+    <div style="margin-bottom:24px;">
+      <div class="section-label reveal">Minhas Obras — Série</div>
+      <h3 style="font-family:'Cinzel',serif;font-size:26px;color:var(--gold-light);margin-bottom:40px;" class="reveal">Quatro Semanas e Meia de Amor</h3>
+    </div>
+
+    <div class="obras-grid">
+      <div class="obra-card reveal">
+        <div class="obra-tag">Parte I</div>
+        <h3 class="obra-title">A Entrega e a Descoberta</h3>
+        <p class="obra-desc">Uma história envolvente sobre reencontros e segundas chances que transformam a vida.</p>
+        <a href="#" class="obra-link">Saiba mais →</a>
+      </div>
+      <div class="obra-card reveal reveal-delay-1">
+        <div class="obra-tag">Parte II</div>
+        <h3 class="obra-title">O Reencontro</h3>
+        <p class="obra-desc">Acompanhe a jornada de dois corações que aprendem a superar o passado.</p>
+        <a href="#" class="obra-link">Saiba mais →</a>
+      </div>
+      <div class="obra-card reveal reveal-delay-2">
+        <div class="obra-tag">Parte III — Em breve</div>
+        <h3 class="obra-title">REBECAMIR: A Redenção do Sultão</h3>
+        <p class="obra-desc">O capítulo final de uma saga épica de amor e redenção.</p>
+        <a href="#" class="obra-link" style="opacity:0.5;">Em breve</a>
+      </div>
+    </div>
+
+    <div style="margin-bottom:24px;margin-top:80px;">
+      <div class="section-label reveal">Obra Individual</div>
+      <h3 style="font-family:'Cinzel',serif;font-size:26px;color:var(--gold-light);margin-bottom:8px;" class="reveal">Entre o Amor e a Amizade</h3>
+      <p style="font-size:15px;font-style:italic;color:rgba(242,232,213,0.5);margin-bottom:40px;" class="reveal">Um enredo sensível que explora a força dos sentimentos e a descoberta do amor</p>
+    </div>
+
+    <div class="ornamental-divider reveal" style="color:var(--gold);">
+      <span>✦ Curadoria Intelectual ✦</span>
+    </div>
+
+    <div class="curadoria-grid reveal">
+      <div class="curadoria-item">
+        <div class="curadoria-author">Dante Alighieri</div>
+        <div class="curadoria-work">A Divina Comédia</div>
+        <p style="font-size:13px;color:rgba(242,232,213,0.4);font-style:italic;margin-bottom:16px;">Adaptação e reflexão sobre a obra atemporal</p>
+        <a href="#" class="curadoria-link">Saiba mais →</a>
+      </div>
+      <div class="curadoria-item">
+        <div class="curadoria-author">Paulo Coelho</div>
+        <div class="curadoria-work">O Alquimista</div>
+        <p style="font-size:13px;color:rgba(242,232,213,0.4);font-style:italic;margin-bottom:16px;">Análise aprofundada dos símbolos e da jornada</p>
+        <a href="#" class="curadoria-link">Saiba mais →</a>
+      </div>
+      <div class="curadoria-item">
+        <div class="curadoria-author">Victor Hugo</div>
+        <div class="curadoria-work">Os Miseráveis</div>
+        <p style="font-size:13px;color:rgba(242,232,213,0.4);font-style:italic;margin-bottom:16px;">Reflexões sobre humanidade e redenção</p>
+        <a href="#" class="curadoria-link">Saiba mais →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SABIJU -->
+<section class="sabiju" id="sabiju">
+  <div class="sabiju-inner">
+    <div class="reveal">
+      <div class="section-label">Serviço Exclusivo</div>
+      <h2 class="section-title">SABIJU —<br><em>Sua história,</em><br>uma obra</h2>
+    </div>
+    <div class="sabiju-grid">
+      <div class="sabiju-main-card reveal">
+        <div class="sabiju-card-label">SABIJU Premium</div>
+        <h3 class="sabiju-card-title">Transformamos sua história em uma obra exclusiva</h3>
+        <p class="sabiju-card-desc">Um livro personalizado escrito a partir da sua própria história. Para quem deseja eternizar sua memória, sua família ou sua jornada.</p>
+        <ul class="sabiju-features">
+          <li>Livro exclusivo impresso personalizado</li>
+          <li>Texto criado a partir da sua história</li>
+          <li>Sigilo absoluto e total confidencialidade</li>
+          <li>Direito integral da obra para você</li>
+          <li>Pena simbólica e marca-página exclusivo</li>
+          <li>Embalagem especial — Kit Relíquia</li>
+        </ul>
+        <a href="#" class="sabiju-cta">Quero transformar minha história</a>
+      </div>
+      <div class="sabiju-right">
+        <div class="sabiju-mini-card reveal reveal-delay-1">
+          <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.4em;color:var(--brown-mid);margin-bottom:16px;text-transform:uppercase;">Digital</div>
+          <h3>SABIJU Digital</h3>
+          <p>Transformamos sua história em um e-book exclusivo com sua foto na capa, estilo romance clássico e totalmente confidencial.</p>
+          <a href="#" class="sabiju-mini-link">Quero meu SABIJU Digital →</a>
+        </div>
+        <div class="sabiju-mini-card reveal reveal-delay-2">
+          <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.4em;color:var(--brown-mid);margin-bottom:16px;text-transform:uppercase;">Premium</div>
+          <h3>Kit Relíquia PREMIUM</h3>
+          <p>Para quem deseja tocar sua história com as próprias mãos. A experiência que atravessa o tempo, em uma embalagem inesquecível.</p>
+          <a href="#" class="sabiju-mini-link">Quero meu Kit Relíquia →</a>
+        </div>
+        <div class="sabiju-mini-card reveal reveal-delay-3">
+          <div style="font-family:'Cinzel',serif;font-size:9px;letter-spacing:0.4em;color:var(--brown-mid);margin-bottom:16px;text-transform:uppercase;">Pacotes</div>
+          <h3>Ver Pacotes Disponíveis</h3>
+          <p>Explore todas as possibilidades e encontre o pacote ideal para eternizar sua história da forma mais especial.</p>
+          <a href="#" class="sabiju-mini-link">Ver todos os pacotes →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEBO DA FLOR -->
+<section class="sebo" id="sebo">
+  <div class="sebo-inner">
+    <div class="reveal">
+      <div class="section-label">Acervo</div>
+      <h2 class="section-title">Sebo<br><em>da Flor</em></h2>
+      <p style="font-size:17px;font-style:italic;color:rgba(242,232,213,0.5);margin-top:16px;">Relíquias literárias prontas para encontrar um novo lar</p>
+    </div>
+    <div class="sebo-grid">
+      <div class="sebo-card reveal">
+        <div class="sebo-img">📖</div>
+        <div class="sebo-card-content">
+          <h3 class="sebo-card-title">O Sultão</h3>
+          <p class="sebo-card-desc">Uma jornada arrebatadora na vida de uma italiana e um poderoso sultão otomano.</p>
+          <a href="#" class="sebo-btn">Comprar</a>
+        </div>
+      </div>
+      <div class="sebo-card reveal reveal-delay-1">
+        <div class="sebo-img">📚</div>
+        <div class="sebo-card-content">
+          <h3 class="sebo-card-title">Rebecamir</h3>
+          <p class="sebo-card-desc">Um romance épico ambientado na Andaluzia Moura do século XIII.</p>
+          <a href="#" class="sebo-btn">Comprar</a>
+        </div>
+      </div>
+      <div class="sebo-card reveal reveal-delay-2">
+        <div class="sebo-img">📕</div>
+        <div class="sebo-card-content">
+          <h3 class="sebo-card-title">O Rapto de Liberdade</h3>
+          <p class="sebo-card-desc">Conheça a jornada de Sophie na época da Revolução Francesa.</p>
+          <a href="#" class="sebo-btn">Comprar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section class="contato" id="contato">
+  <div class="contato-inner">
+    <div class="reveal">
+      <div class="section-label">Fale Comigo</div>
+      <h2 class="section-title">Sua história<br><em>começa aqui</em></h2>
+    </div>
+    <div class="contato-grid">
+      <form class="contato-form reveal">
+        <div class="form-group">
+          <label>Seu Nome</label>
+          <input type="text" placeholder="Como posso te chamar?">
+        </div>
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" placeholder="seu@email.com">
+        </div>
+        <div class="form-group">
+          <label>Sua Mensagem</label>
+          <textarea rows="5" placeholder="Conte um pouco da sua história..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">Enviar Mensagem</button>
+      </form>
+      <div class="contato-info reveal reveal-delay-1">
+        <p>Cada mensagem é lida com atenção e carinho. Sua história merece ser ouvida, e estou aqui para isso.</p>
+        <div>
+          <div class="section-label" style="color:var(--brown-mid);margin-bottom:24px;">
+            <span style="width:30px;height:1px;background:var(--brown-mid);display:inline-block;margin-right:16px;"></span>
+            Redes Sociais
+          </div>
+          <div class="social-links">
+            <a href="#" class="social-link" title="E-mail">✉</a>
+            <a href="#" class="social-link" title="Instagram">◈</a>
+            <a href="#" class="social-link" title="Facebook">◉</a>
+            <a href="#" class="social-link" title="WhatsApp">◎</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">A Pena de um Bom Escritor</div>
+  <ul class="footer-nav">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#gavetas">Gavetas</a></li>
+    <li><a href="#atelie">Ateliê</a></li>
+    <li><a href="#sabiju">SABIJU</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+  <div class="footer-copy">©2026 Todos os direitos reservados</div>
+</footer>
+
+<script>
+  // CURSOR
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(2)';
+      ring.style.transform = 'translate(-50%,-50%) scale(1.5)';
+      ring.style.opacity = '0.3';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+      ring.style.transform = 'translate(-50%,-50%) scale(1)';
+      ring.style.opacity = '0.6';
+    });
+  });
+
+  // PARTICLES
+  const pContainer = document.getElementById('particles');
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (8 + Math.random() * 12) + 's';
+    p.style.animationDelay = (Math.random() * 12) + 's';
+    p.style.width = p.style.height = (1 + Math.random() * 2) + 'px';
+    pContainer.appendChild(p);
+  }
+
+  // NAV SCROLL
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // HAMBURGER
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    });
+  });
+
+  // SCROLL REVEAL
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
