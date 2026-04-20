@@ -1,0 +1,158 @@
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 520px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ink-deep);
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  z-index: 0;
+}
+
+.bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 10, 5, 0.35) 0%,
+    rgba(15, 10, 5, 0.15) 40%,
+    rgba(15, 10, 5, 0.5) 100%
+  );
+  z-index: 1;
+}
+
+.content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 0 32px;
+  max-width: 840px;
+}
+
+.eyebrow {
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  letter-spacing: 0.55em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.2s forwards;
+}
+
+.eyebrow::before,
+.eyebrow::after {
+  content: "";
+  width: 36px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.title {
+  font-family: "Cinzel", serif;
+  font-size: clamp(32px, 5.5vw, 72px);
+  font-weight: 400;
+  color: var(--parchment);
+  line-height: 1.1;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.4s forwards;
+}
+
+.title em {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  color: var(--gold-light);
+  font-size: 1.15em;
+  display: block;
+}
+
+.quote {
+  font-size: clamp(15px, 2vw, 19px);
+  font-style: italic;
+  color: rgba(242, 232, 213, 0.75);
+  line-height: 1.75;
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.6s forwards;
+  font-weight: 300;
+}
+
+.sub {
+  font-family: "Cinzel", serif;
+  font-size: clamp(12px, 1.4vw, 15px);
+  letter-spacing: 0.12em;
+  color: rgba(201, 168, 76, 0.7);
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.8s forwards;
+}
+
+.scroll {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: rgba(242, 232, 213, 0.4);
+  font-family: "Cinzel", serif;
+  font-size: 9px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  animation: bounce 2.5s ease-in-out infinite;
+}
+
+.scroll::after {
+  content: "";
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(8px);
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    height: 92vh;
+  }
+
+  .bg {
+    background-attachment: scroll;
+  }
+}

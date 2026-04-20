@@ -1,0 +1,115 @@
+.footer {
+  background: var(--ink);
+  padding: 52px 56px;
+  border-top: 1px solid rgba(201, 168, 76, 0.12);
+}
+
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 28px;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.logoMain {
+  font-family: "Cinzel", serif;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+}
+
+.logoSub {
+  font-size: 11px;
+  font-style: italic;
+  color: rgba(242, 232, 213, 0.3);
+}
+
+.nav {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+.nav a {
+  font-family: "Cinzel", serif;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: rgba(242, 232, 213, 0.35);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+
+.nav a:hover {
+  color: var(--gold);
+}
+
+.social {
+  display: flex;
+  gap: 16px;
+}
+
+.social a {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: rgba(242, 232, 213, 0.4);
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.social a svg {
+  width: 20px;
+  height: 20px;
+}
+
+.social a:hover {
+  background: rgba(201, 168, 76, 0.1);
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+.copy {
+  width: 100%;
+  text-align: center;
+  font-size: 11px;
+  color: rgba(242, 232, 213, 0.2);
+  letter-spacing: 0.15em;
+  margin-top: 8px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(201, 168, 76, 0.06);
+}
+
+@media (max-width: 1024px) {
+  .footer {
+    padding: 44px 28px;
+  }
+}
+
+@media (max-width: 640px) {
+  .inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav {
+    gap: 20px;
+  }
+}

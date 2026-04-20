@@ -1,0 +1,159 @@
+.section {
+  padding: 100px 0;
+  background: var(--ink-deep);
+  color: var(--parchment);
+}
+
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 56px;
+}
+
+.label {
+  font-family: "Cinzel", serif;
+  font-size: 9px;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.label::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.sectionTitle {
+  font-family: "Cinzel", serif;
+  font-size: clamp(28px, 3.5vw, 48px);
+  font-weight: 400;
+  color: var(--parchment);
+  line-height: 1.1;
+}
+
+.sectionTitle em {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  color: var(--gold-light);
+}
+
+/* Serie blocks */
+.serieBlock {
+  margin-bottom: 72px;
+}
+
+.serieHeader {
+  margin-bottom: 48px;
+}
+
+.serieLabel {
+  font-family: "Cinzel", serif;
+  font-size: 9px;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.serieLabel::before {
+  content: "◆";
+  font-size: 7px;
+}
+
+.serieTitle {
+  font-family: "Cinzel", serif;
+  font-size: clamp(20px, 2.5vw, 30px);
+  color: var(--gold-light);
+  font-weight: 500;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  margin-bottom: 24px;
+}
+
+.grid2 {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.grid1 {
+  grid-template-columns: 1fr;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Ornament */
+.ornament {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: rgba(201, 168, 76, 0.3);
+  margin: 56px 0;
+}
+
+.ornament::before,
+.ornament::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+
+.ornament span {
+  font-size: 13px;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .wrap {
+    padding: 0 28px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .grid1 {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: 64px 0;
+  }
+
+  .wrap {
+    padding: 0 20px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    max-width: 360px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .grid2 {
+    max-width: 360px;
+  }
+}

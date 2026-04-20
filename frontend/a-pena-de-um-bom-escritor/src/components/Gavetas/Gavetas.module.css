@@ -1,0 +1,176 @@
+.gavetas {
+  background: var(--parchment-dark);
+  color: var(--text-body);
+  padding: 120px 80px;
+}
+
+.gavetas .intro .label {
+  color: var(--brown-mid);
+}
+
+.gavetas .intro .label::before {
+  background: var(--brown-mid);
+}
+
+.gavetas .intro .title {
+  color: var(--brown-deep);
+}
+
+.intro {
+  max-width: 520px;
+  margin-bottom: 80px;
+}
+
+.label {
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--brown-mid);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.label::before {
+  content: "";
+  width: 30px;
+  height: 1px;
+  background: var(--brown-mid);
+}
+
+.title {
+  font-family: "Cinzel", serif;
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--brown-deep);
+}
+
+.title em {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  color: var(--gold-light);
+}
+
+.introText {
+  margin-top: 20px;
+  font-size: 18px;
+  color: var(--brown-light);
+  line-height: 1.7;
+  font-style: italic;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  background: var(--brown-deep);
+  cursor: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardBg {
+  width: 100%;
+  aspect-ratio: 4/3;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.cardBgInner {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card:hover .cardBgInner {
+  transform: scale(1.08);
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 28px 28px 32px;
+  flex: 1;
+}
+
+.cardNumber {
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.cardTitle {
+  font-family: "Cinzel", serif;
+  font-size: 20px;
+  color: var(--parchment);
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.cardDesc {
+  font-size: 13px;
+  color: rgba(242, 232, 213, 0.65);
+  font-style: italic;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.cardBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: "Cinzel", serif;
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  transition: gap 0.3s;
+}
+
+.cardBtn::after {
+  content: "→";
+  transition: transform 0.3s;
+}
+
+.card:hover .cardBtn {
+  gap: 18px;
+}
+
+.card:hover .cardBtn::after {
+  transform: translateX(4px);
+}
+
+@media (max-width: 1024px) {
+  .gavetas {
+    padding: 80px 32px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gavetas {
+    padding: 60px 24px;
+  }
+}
