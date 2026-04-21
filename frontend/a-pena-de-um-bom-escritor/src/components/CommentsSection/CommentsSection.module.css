@@ -204,6 +204,11 @@
   transform: scale(0.98);
 }
 
+.submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* ── Dark theme ── */
 .dark {
   background: rgba(255, 255, 255, 0.04);

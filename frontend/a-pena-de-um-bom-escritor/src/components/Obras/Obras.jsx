@@ -147,6 +147,7 @@ export default function Obras() {
         id="comentarios-obras"
         initialComments={commentsIniciais}
         dark
+        pagina="minhas-obras"
       />
     </section>
   );

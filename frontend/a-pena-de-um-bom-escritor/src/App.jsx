@@ -7,6 +7,8 @@ import Footer from './components/Footer/Footer';
 import Home from './pages/Home';
 import Atelie from './pages/Atelie';
 import Sabiju from './pages/Sabiju';
+import AdminLogin from './pages/AdminLogin';
+import AdminModeracao from './pages/AdminModeracao';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -18,18 +20,22 @@ function ScrollToTop() {
 
 function AppContent() {
   useScrollReveal();
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
     <>
       <ScrollToTop />
-      <CustomCursor />
-      <Nav />
+      {!isAdminRoute && <CustomCursor />}
+      {!isAdminRoute && <Nav />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/atelie" element={<Atelie />} />
         <Route path="/sabiju" element={<Sabiju />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/moderacao" element={<AdminModeracao />} />
       </Routes>
-      <Footer />
+      {!isAdminRoute && <Footer />}
     </>
   );
 }

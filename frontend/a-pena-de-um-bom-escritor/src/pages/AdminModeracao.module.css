@@ -1,0 +1,415 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f0a05 0%, #1a120a 100%);
+  color: var(--parchment);
+  cursor: auto;
+}
+
+.loadingContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0f0a05 0%, #1a120a 100%);
+}
+
+.loading {
+  font-family: "Cinzel", serif;
+  font-size: 18px;
+  color: var(--gold);
+  letter-spacing: 0.2em;
+}
+
+/* Header */
+.header {
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+  padding: 24px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(10px);
+}
+
+.headerContent {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-family: "Cinzel", serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--gold);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon {
+  font-size: 28px;
+}
+
+.subtitle {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 14px;
+  font-style: italic;
+  color: rgba(242, 232, 213, 0.5);
+}
+
+.headerActions {
+  display: flex;
+  gap: 12px;
+}
+
+.btnSecundario,
+.btnSair {
+  font-family: "Cinzel", serif;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid;
+}
+
+.btnSecundario {
+  background: transparent;
+  border-color: rgba(201, 168, 76, 0.4);
+  color: var(--gold);
+}
+
+.btnSecundario:hover {
+  background: rgba(201, 168, 76, 0.1);
+  border-color: var(--gold);
+}
+
+.btnSair {
+  background: rgba(201, 76, 76, 0.2);
+  border-color: rgba(201, 76, 76, 0.4);
+  color: #ff6b6b;
+}
+
+.btnSair:hover {
+  background: rgba(201, 76, 76, 0.3);
+  border-color: #ff6b6b;
+}
+
+/* Estatísticas */
+.stats {
+  max-width: 1400px;
+  margin: 32px auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.statCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  padding: 24px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.statCard:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(201, 168, 76, 0.4);
+}
+
+.statLabel {
+  font-family: "Cinzel", serif;
+  font-size: 12px;
+  color: rgba(201, 168, 76, 0.7);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.statValue {
+  font-family: "Cinzel", serif;
+  font-size: 36px;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+/* Filtros */
+.filtros {
+  max-width: 1400px;
+  margin: 0 auto 32px;
+  padding: 0 32px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.filtroGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filtroLabel {
+  font-family: "Cinzel", serif;
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.filtroSelect {
+  background: rgba(15, 10, 5, 0.5);
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  color: var(--parchment);
+  padding: 10px 16px;
+  font-family: "EB Garamond", serif;
+  font-size: 14px;
+  min-width: 160px;
+  cursor: pointer;
+}
+
+.filtroSelect:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+.btnAtualizar {
+  background: rgba(201, 168, 76, 0.15);
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  color: var(--gold);
+  font-family: "Cinzel", serif;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btnAtualizar:hover {
+  background: rgba(201, 168, 76, 0.25);
+  border-color: var(--gold);
+}
+
+/* Lista de Comentários */
+.comentariosList {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 32px 60px;
+}
+
+.vazio {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.vazioIcon {
+  font-size: 64px;
+  display: block;
+  margin-bottom: 16px;
+  opacity: 0.3;
+}
+
+.vazio p {
+  font-family: "Cinzel", serif;
+  font-size: 16px;
+  color: rgba(242, 232, 213, 0.4);
+  font-style: italic;
+}
+
+.comentarioCard {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  padding: 24px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.comentarioCard:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(201, 168, 76, 0.3);
+}
+
+.comentarioHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+}
+
+.comentarioInfo {
+  flex: 1;
+}
+
+.comentarioNome {
+  font-family: "Cinzel", serif;
+  font-size: 16px;
+  color: var(--gold);
+  margin-bottom: 6px;
+  letter-spacing: 0.05em;
+}
+
+.comentarioMeta {
+  font-size: 13px;
+  color: rgba(242, 232, 213, 0.5);
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.badgePendente,
+.badgeAprovado,
+.badgeRejeitado {
+  font-family: "Cinzel", serif;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.badgePendente {
+  background: rgba(255, 193, 7, 0.15);
+  color: #ffc107;
+  border: 1px solid rgba(255, 193, 7, 0.3);
+}
+
+.badgeAprovado {
+  background: rgba(76, 201, 140, 0.15);
+  color: #4cc98c;
+  border: 1px solid rgba(76, 201, 140, 0.3);
+}
+
+.badgeRejeitado {
+  background: rgba(201, 76, 76, 0.15);
+  color: #ff6b6b;
+  border: 1px solid rgba(201, 76, 76, 0.3);
+}
+
+.comentarioTexto {
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(242, 232, 213, 0.9);
+  margin-bottom: 20px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border-left: 3px solid rgba(201, 168, 76, 0.3);
+}
+
+.comentarioAcoes {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btnAprovar,
+.btnRejeitar,
+.btnPendente,
+.btnDeletar {
+  font-family: "Cinzel", serif;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid;
+}
+
+.btnAprovar {
+  background: rgba(76, 201, 140, 0.1);
+  border-color: rgba(76, 201, 140, 0.3);
+  color: #4cc98c;
+}
+
+.btnAprovar:hover:not(:disabled) {
+  background: rgba(76, 201, 140, 0.2);
+  border-color: #4cc98c;
+}
+
+.btnRejeitar {
+  background: rgba(201, 76, 76, 0.1);
+  border-color: rgba(201, 76, 76, 0.3);
+  color: #ff6b6b;
+}
+
+.btnRejeitar:hover:not(:disabled) {
+  background: rgba(201, 76, 76, 0.2);
+  border-color: #ff6b6b;
+}
+
+.btnPendente {
+  background: rgba(255, 193, 7, 0.1);
+  border-color: rgba(255, 193, 7, 0.3);
+  color: #ffc107;
+}
+
+.btnPendente:hover:not(:disabled) {
+  background: rgba(255, 193, 7, 0.2);
+  border-color: #ffc107;
+}
+
+.btnDeletar {
+  background: rgba(120, 120, 120, 0.1);
+  border-color: rgba(120, 120, 120, 0.3);
+  color: #999;
+}
+
+.btnDeletar:hover:not(:disabled) {
+  background: rgba(120, 120, 120, 0.2);
+  border-color: #999;
+}
+
+.btnAprovar:disabled,
+.btnRejeitar:disabled,
+.btnPendente:disabled,
+.btnDeletar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .headerContent {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .filtros {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filtroSelect {
+    width: 100%;
+  }
+
+  .comentarioHeader {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .comentarioAcoes {
+    flex-direction: column;
+  }
+
+  .comentarioAcoes button {
+    width: 100%;
+  }
+}

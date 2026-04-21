@@ -57,6 +57,7 @@ export default function Curadoria() {
         <CommentsSection
           id="comentarios-curadoria"
           initialComments={commentsIniciais}
+          pagina="atelie-literario"
         />
       </div>
     </section>
